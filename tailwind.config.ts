@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -15,6 +15,20 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
-}
-export default config
+  plugins: [
+    function ({ addUtilities }: any) {
+      const newUtilities = {
+        '.number-input::-webkit-inner-spin-button, .number-input::-webkit-outer-spin-button':
+          {
+            '-webkit-appearance': 'none',
+            margin: '0',
+          },
+        '.number-input': {
+          '-moz-appearance': 'textfield',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
+};
+export default config;
