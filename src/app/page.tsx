@@ -14,14 +14,14 @@ export default function Home() {
         alt="blob"
         className="absolute top-1/2 left-1/2 z-0 transform -translate-x-1/2 -translate-y-1/2 opacity-40"
       />
-      <form className="max-w-lg flex flex-col z-10 bg-background p-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000005a]">
+      <form className="max-w-lg flex flex-col z-10 bg-background p-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000002f]">
         <h3 className="text-2xl font-semibold">Burn $NUMA</h3>
         <p className="mt-1 text-[#545b76]">
           Lorem ipsum dolor sit amet consectetur
         </p>
         <span className="w-full flex items-center justify-between text-sm my-5">
-          <p>
-            Burning from <strong>0xfcfc...48d2</strong>
+          <p className="text-green-500">
+            Connected addr. <strong>0xfcfc...48d2</strong>
           </p>
           <a href="#" className="mt-0 font-semibold underline">
             Change Wallet?
@@ -39,7 +39,14 @@ export default function Home() {
               placeholder="0"
               className="w-full text-4xl border-0 outline-0 bg-transparent number-input"
             />
-            <span className="flex items-center text-sm rounded-2xl px-3 py-1 gap-1 bg-[#0d0e12]">
+            <span className="flex min-w-max items-center text-sm rounded-2xl px-2 py-1 gap-2 bg-[#0d0e12]">
+              <Image
+                src="/numaIcon.png"
+                width={20}
+                height={20}
+                alt="numa"
+                className="rounded-full"
+              />
               <p>NUMA</p>
             </span>
           </span>
@@ -60,14 +67,21 @@ export default function Home() {
               placeholder="0"
               className="w-full text-4xl border-0 outline-0 bg-transparent number-input"
             />
-            <span className="flex items-center text-sm rounded-2xl px-3 py-1 gap-1 bg-[#0d0e12]">
+            <span className="flex min-w-max items-center text-sm rounded-2xl px-2 py-1 gap-2 bg-[#0d0e12]">
+              <Image
+                src="/rEthIcon.png"
+                width={20}
+                height={20}
+                alt="rEth"
+                className="rounded-full"
+              />
               <p>rETH</p>
             </span>
           </span>
         </div>
 
         <div className="flex items-center justify-between mt-1 text-[#979fc1]">
-          <p>Price: 45c</p>
+          <p>Price: $0.45</p>
           <p>Fee: 5%</p>
         </div>
 
