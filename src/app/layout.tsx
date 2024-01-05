@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Geist } from '@/lib/Geist';
 import { ThemeProvider } from '@/components/theme-provider';
+import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +25,10 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange>
-          {children}
+          <div className="w-full flex flex-col h-screen">
+            <Header />
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="relative flex h-screen flex-col items-center justify-between p-24 overflow-hidden">
+    <main className="relative flex  flex-col items-center justify-between p-24 overflow-hidden">
       <Image
         src="/blob.png"
         width={1000}
@@ -20,7 +20,7 @@ export default function Home() {
           Lorem ipsum dolor sit amet consectetur
         </p>
         <span className="w-full flex items-center justify-between text-sm my-5">
-          <p className="text-green-500">
+          <p>
             Connected addr. <strong>0xfcfc...48d2</strong>
           </p>
           <a href="#" className="mt-0 font-semibold underline">
