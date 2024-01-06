@@ -145,7 +145,7 @@ export default function Home() {
           </Button>
         )}
       </form>
-      <Alerts open={showAlerts} onClose={closeAlerts} />
+      <Alerts open={showAlerts} onClose={closeAlerts} isMinting={isMinting} />
     </main>
   );
 }
