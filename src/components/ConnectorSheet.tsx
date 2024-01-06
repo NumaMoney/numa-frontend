@@ -43,8 +43,6 @@ export default function ConnectorSheet() {
     return c;
   });
 
-  console.log(filteredConnectors);
-
   return (
     <Sheet open={showConnectors} onOpenChange={handleCloseConnectors}>
       <SheetContent>

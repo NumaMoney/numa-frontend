@@ -31,7 +31,7 @@ export default function RootLayout({
           disableTransitionOnChange>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-              <div className="w-full flex flex-col h-screen">
+              <div className="w-full flex flex-col min-h-[740px] h-screen">
                 <Header />
                 {children}
                 <ConnectorSheet />
