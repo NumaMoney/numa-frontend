@@ -1,10 +1,18 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { connectorAtom } from '@/lib/atom';
+import formatAddress from '@/lib/formatAddress';
+import { useSetAtom } from 'jotai';
 import { ArrowDownUp } from 'lucide-react';
 import Image from 'next/image';
+import { useAccount, useDisconnect } from 'wagmi';
 
 export default function Home() {
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const setShowConnectors = useSetAtom(connectorAtom);
+
   return (
     <main className="relative flex  flex-col items-center justify-between p-24 overflow-hidden">
       <Image
@@ -16,17 +24,21 @@ export default function Home() {
       />
       <form className="max-w-lg flex flex-col z-10 bg-background p-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000002f]">
         <h3 className="text-2xl font-semibold">Burn $NUMA</h3>
-        <p className="mt-1 text-[#545b76]">
+        <p className="mt-1 text-[#545b76] mb-5">
           Lorem ipsum dolor sit amet consectetur
         </p>
-        <span className="w-full flex items-center justify-between text-sm my-5">
-          <p>
-            Connected addr. <strong>0xfcfc...48d2</strong>
-          </p>
-          <a href="#" className="mt-0 font-semibold underline">
-            Change Wallet?
-          </a>
-        </span>
+        {address ? (
+          <span className="w-full flex items-center justify-between text-sm mb-5">
+            <p>
+              Connected addr. <strong>{formatAddress(address)}</strong>
+            </p>
+            {/* <p
+              className="mt-0 font-semibold cursor-pointer hover:underline"
+              onClick={() => disconnect()}>
+              Disconnect?
+            </p> */}
+          </span>
+        ) : null}
 
         <div className="w-full flex flex-col gap-2 rounded-2xl bg-[#16181fd2] p-4 mb-2">
           <span className="w-full flex items-center justify-between text-sm text-gray-600">
@@ -84,12 +96,20 @@ export default function Home() {
           <p>Price: $0.45</p>
           <p>Fee: 5%</p>
         </div>
-
-        <Button
-          type="submit"
-          className="rounded-lg py-6 text-lg font-semibold mt-4">
-          Burn $NUMA
-        </Button>
+        {address ? (
+          <Button
+            type="submit"
+            className="rounded-lg py-6 text-lg font-semibold mt-4">
+            Burn $NUMA
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            className="rounded-lg py-6 text-lg font-semibold mt-4"
+            onClick={() => setShowConnectors(true)}>
+            Connect
+          </Button>
+        )}
       </form>
     </main>
   );

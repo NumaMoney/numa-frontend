@@ -1,6 +1,12 @@
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia } from 'wagmi/chains';
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors';
+import {
+  coinbaseWallet,
+  injected,
+  metaMask,
+  safe,
+  walletConnect,
+} from 'wagmi/connectors';
 
 declare module 'wagmi' {
   interface Register {
@@ -12,7 +18,15 @@ const projectId = '54a1a167063aca3350b294e306774934';
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
-  connectors: [injected(), safe(), metaMask(), walletConnect({ projectId })],
+  connectors: [
+    injected(),
+    safe(),
+    coinbaseWallet({
+      appName: 'Numa',
+    }),
+    metaMask(),
+    walletConnect({ projectId }),
+  ],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
