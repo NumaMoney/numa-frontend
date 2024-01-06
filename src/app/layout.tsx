@@ -1,7 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { Geist } from '@/lib/Geist';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -9,6 +7,7 @@ import Header from '@/components/Header';
 import { WagmiProvider } from 'wagmi';
 import { config } from '@/wagmi/config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import ConnectorSheet from '@/components/ConnectorSheet';
 
 // export const metadata: Metadata = {
 //   title: 'Create Next App',
@@ -35,6 +34,7 @@ export default function RootLayout({
               <div className="w-full flex flex-col h-screen">
                 <Header />
                 {children}
+                <ConnectorSheet />
               </div>
             </QueryClientProvider>
           </WagmiProvider>
