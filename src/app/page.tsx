@@ -1,5 +1,6 @@
 'use client';
 
+import Alerts from '@/components/Alerts';
 import { Button } from '@/components/ui/button';
 import { connectorAtom } from '@/lib/atom';
 import formatAddress from '@/lib/formatAddress';
@@ -14,6 +15,7 @@ export default function Home() {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const [isMinting, setIsMinting] = useState(true);
+  const [showAlerts, setShowAlerts] = useState(false);
   const setShowConnectors = useSetAtom(connectorAtom);
 
   function handleFlip() {
@@ -22,7 +24,11 @@ export default function Home() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('submit triggered');
+    setShowAlerts(true);
+  }
+
+  function closeAlerts() {
+    setShowAlerts(false);
   }
 
   return (
@@ -139,6 +145,7 @@ export default function Home() {
           </Button>
         )}
       </form>
+      <Alerts open={showAlerts} onClose={closeAlerts} />
     </main>
   );
 }
