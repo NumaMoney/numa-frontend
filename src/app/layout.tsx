@@ -8,6 +8,7 @@ import { WagmiProvider } from 'wagmi';
 import { config } from '@/wagmi/config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ConnectorSheet from '@/components/ConnectorSheet';
+import { Toaster } from '@/components/ui/sonner';
 
 // export const metadata: Metadata = {
 //   title: 'Create Next App',
@@ -35,6 +36,16 @@ export default function RootLayout({
                 <Header />
                 {children}
                 <ConnectorSheet />
+                <Toaster
+                  position="top-center"
+                  toastOptions={{
+                    style: {
+                      background: 'white',
+                      color: 'black',
+                      border: 'none',
+                    },
+                  }}
+                />
               </div>
             </QueryClientProvider>
           </WagmiProvider>

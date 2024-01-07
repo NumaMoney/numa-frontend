@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 import { MoveRight, X } from 'lucide-react';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 type AlertProps = {
   open: boolean;
@@ -18,8 +19,23 @@ type AlertProps = {
 };
 
 export default function Alerts({ open, onClose, isMinting }: AlertProps) {
+  async function handleSwap() {
+    const promise = () =>
+      new Promise((resolve) =>
+        setTimeout(() => resolve({ name: 'Sonner' }), 2000)
+      );
+
+    toast.promise(promise, {
+      loading: 'Confirm Swap from wallet',
+      success: (data) => {
+        return `Permission Granted`;
+      },
+      error: 'Error',
+    });
+  }
+
   return (
-    <AlertDialog open={open} onOpenChange={onClose}>
+    <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center justify-between">
@@ -101,7 +117,9 @@ export default function Alerts({ open, onClose, isMinting }: AlertProps) {
           </div>
         </div>
         <AlertDialogFooter className="mt-4">
-          <AlertDialogAction className="w-full font-semibold text-lg py-6">
+          <AlertDialogAction
+            className="w-full font-semibold text-lg py-6"
+            onClick={handleSwap}>
             Confirm {isMinting ? 'Mint' : 'Burn'}
           </AlertDialogAction>
         </AlertDialogFooter>
