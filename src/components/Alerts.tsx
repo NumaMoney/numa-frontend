@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { MoveRight, X } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { Button } from './ui/button';
 
 type AlertProps = {
   open: boolean;
@@ -35,7 +36,7 @@ export default function Alerts({ open, onClose, isMinting }: AlertProps) {
   }
 
   return (
-    <AlertDialog open={open}>
+    <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center justify-between">
@@ -117,11 +118,11 @@ export default function Alerts({ open, onClose, isMinting }: AlertProps) {
           </div>
         </div>
         <AlertDialogFooter className="mt-4">
-          <AlertDialogAction
+          <Button
             className="w-full font-semibold text-lg py-6"
             onClick={handleSwap}>
             Confirm {isMinting ? 'Mint' : 'Burn'}
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

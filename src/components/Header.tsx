@@ -22,7 +22,7 @@ export default function Header() {
   }
 
   return (
-    <div className="absolute w-full px-8 py-4 flex bg-transparent items-center justify-between">
+    <div className="absolute w-full px-8 py-4 flex bg-transparent items-center justify-between z-50">
       <Image src="/logo.svg" width={100} height={100} alt="logo" />
       {/* <ul className="flex items-center gap-4 bg-transparent">
         <li className="cursor-pointer">Vault</li>
@@ -34,7 +34,7 @@ export default function Header() {
         <span
           className={`${buttonVariants({
             variant: 'secondary',
-          })} cursor-pointer`}>
+          })} cursor-pointer bg-white/5`}>
           {ensAvatar ? (
             <Image
               width={20}

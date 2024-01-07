@@ -30,7 +30,7 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange>
-          <WagmiProvider config={config}>
+          <WagmiProvider reconnectOnMount={true} config={config}>
             <QueryClientProvider client={queryClient}>
               <div className="w-full flex flex-col min-h-[740px] h-screen">
                 <Header />
