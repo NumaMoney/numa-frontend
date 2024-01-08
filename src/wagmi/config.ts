@@ -17,7 +17,7 @@ declare module 'wagmi' {
 const projectId = '54a1a167063aca3350b294e306774934';
 
 export const config = createConfig({
-  chains: [mainnet, sepolia],
+  chains: [sepolia],
   connectors: [
     injected(),
     safe(),
