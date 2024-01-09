@@ -6,6 +6,7 @@ import { connectorAtom } from '@/lib/atom';
 import { useSetAtom } from 'jotai';
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
 import formatAddress from '@/lib/formatAddress';
+import { useEffect } from 'react';
 
 export default function Header() {
   const setShowConnectors = useSetAtom(connectorAtom);
@@ -18,6 +19,13 @@ export default function Header() {
   function handleConnect() {
     setShowConnectors(true);
   }
+
+  useEffect(() => {
+    if (isConnected) {
+      setShowConnectors(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
   return (
     <div className="absolute w-full px-8 py-4 flex bg-transparent items-center justify-between z-50">

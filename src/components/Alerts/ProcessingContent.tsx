@@ -5,8 +5,9 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
-export default function ProcessingContent() {
+export default function ProcessingContent({ txHash }: { txHash?: string }) {
   return (
     <>
       <AlertDialogHeader>
@@ -19,13 +20,24 @@ export default function ProcessingContent() {
       <div className="flex flex-col justify-center items-center">
         <Loader2 size={60} className="animate-spin" />
 
-        <h3 className="mt-4 text-lg">Processing</h3>
-        {/* <a href="#" className="text-xs mt-2 text-blue-500">
+        <h3 className="mt-4 text-lg">
+          {txHash ? 'Swap Initiated' : 'Waiting for Confirmation'}
+        </h3>
+        {txHash ? (
+          <Link
+            href={`https://sepolia.etherscan.io/tx/${txHash}`}
+            target="_blank"
+            className="text-xs mt-2 text-blue-500">
             View on Explorer
-          </a> */}
+          </Link>
+        ) : null}
       </div>
       <AlertDialogFooter className="mt-5">
-        <p className="text-xs mx-auto text-gray-600">Proceed on your wallet</p>
+        {!txHash ? (
+          <p className="text-xs mx-auto text-gray-600">
+            Proceed on your wallet
+          </p>
+        ) : null}
         {/* <AlertDialogAction className="w-full font-semibold text-lg py-6">
               Close
             </AlertDialogAction> */}
