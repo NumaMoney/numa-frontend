@@ -14,7 +14,7 @@ import {
 } from 'wagmi';
 import { sepolia } from 'wagmi/chains';
 import abi from '@/contract/abi.json';
-import { parseEther } from 'viem';
+import { formatEther, parseEther } from 'viem';
 import SwapForm from '@/components/SwapForm';
 
 export default function Home() {
@@ -45,6 +45,17 @@ export default function Home() {
     setShowAlerts(false);
   }
 
+  let price: number | null = null;
+  let fee: number | null = null;
+
+  if (typeof numaEst?.data === 'bigint') {
+    price = Number(formatEther(numaEst.data));
+  }
+
+  if (feeEst?.data) {
+    fee = 100 - (Number(feeEst?.data) / 1000) * 100;
+  }
+
   return (
     <main className="relative flex h-full flex-col items-center justify-between overflow-hidden">
       <Image
@@ -54,8 +65,20 @@ export default function Home() {
         alt="blob"
         className="absolute top-1/2 left-1/2 z-0 transform -translate-x-1/2 -translate-y-1/2 opacity-40"
       />
-      <SwapForm rEthEst={rEthEst} numaEst={numaEst} feeEst={feeEst} />
-      <Alerts open={showAlerts} onClose={closeAlerts} isMinting={isMinting} />
+      <SwapForm
+        rEthEst={rEthEst}
+        numaEst={numaEst}
+        fee={fee}
+        price={price}
+        setShowAlerts={setShowAlerts}
+      />
+      <Alerts
+        open={showAlerts}
+        onClose={closeAlerts}
+        isMinting={isMinting}
+        fee={fee}
+        price={price}
+      />
     </main>
   );
 }

@@ -17,11 +17,19 @@ type AlertProps = {
   open: boolean;
   onClose: () => void;
   isMinting: boolean;
+  fee: number | null;
+  price: number | null;
 };
 
 const sleep = (ms = 2000) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export default function Alerts({ open, onClose, isMinting }: AlertProps) {
+export default function Alerts({
+  open,
+  onClose,
+  isMinting,
+  price,
+  fee,
+}: AlertProps) {
   const [step, setStep] = useState(1);
 
   const { writeContract, data: txHash } = useWriteContract({
@@ -72,7 +80,12 @@ export default function Alerts({ open, onClose, isMinting }: AlertProps) {
     <AlertDialog open={open} onOpenChange={handleClose}>
       <AlertDialogContent className={cn(step > 1 && 'w-80')}>
         {step === 1 ? (
-          <ConfirmSwapContent isMinting={isMinting} handleSwap={handleSwap} />
+          <ConfirmSwapContent
+            isMinting={isMinting}
+            handleSwap={handleSwap}
+            price={price}
+            fee={fee}
+          />
         ) : null}
         {step === 2 ? <ProcessingContent txHash={txHash} /> : null}
         {step === 3 ? <SwapSuccessContent txHash={txHash} /> : null}

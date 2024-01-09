@@ -8,8 +8,18 @@ import { cn } from '@/lib/utils';
 import { MoveRight, X } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import { useAtomValue } from 'jotai';
+import { numaInputAtom, rEthInputAtom } from '@/lib/atom';
 
-export default function ConfirmSwapContent({ isMinting, handleSwap }: any) {
+export default function ConfirmSwapContent({
+  isMinting,
+  handleSwap,
+  price,
+  fee,
+}: any) {
+  const rEth = useAtomValue(rEthInputAtom);
+  const numa = useAtomValue(numaInputAtom);
+
   return (
     <>
       <AlertDialogHeader>
@@ -45,7 +55,7 @@ export default function ConfirmSwapContent({ isMinting, handleSwap }: any) {
               <p className="text-lg">rETH</p>
             </span>
             <h3 className={cn('text-3xl mt-2', !isMinting && 'ml-auto')}>
-              {Number(2).toFixed(2)}
+              {Number(rEth).toFixed(2)}
             </h3>
           </div>
           <MoveRight size={40} className="order-2" />
@@ -72,18 +82,18 @@ export default function ConfirmSwapContent({ isMinting, handleSwap }: any) {
               />
             </span>
             <h3 className={cn('text-3xl mt-2 ml-auto', !isMinting && 'ml-0')}>
-              {Number(4).toFixed(2)}
+              {Number(numa).toFixed(2)}
             </h3>
           </div>
         </div>
         <div className="flex flex-col gap-1 bg-black p-4 rounded-lg">
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Rate</p>
-            <p>1 rETH = 2 NUMA</p>
+            {price ? <p>1 rEth = {price} NUMA</p> : <p>-</p>}
           </div>
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Fee</p>
-            <p>$0</p>
+            {fee ? <p>{fee}%</p> : <p>-</p>}
           </div>
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Network cost</p>

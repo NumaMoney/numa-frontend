@@ -15,13 +15,18 @@ import { Button } from './ui/button';
 import { ArrowDownUp } from 'lucide-react';
 import { sepolia } from 'viem/chains';
 
-export default function SwapForm({ rEthEst, numaEst, feeEst }: any) {
+export default function SwapForm({
+  rEthEst,
+  numaEst,
+  fee,
+  setShowAlerts,
+  price,
+}: any) {
   const [numa, setNuma] = useAtom(numaInputAtom);
   const [rEth, setEth] = useAtom(rEthInputAtom);
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const [isMinting, setIsMinting] = useState(true);
-  const [showAlerts, setShowAlerts] = useState(false);
   const setShowConnectors = useSetAtom(connectorAtom);
   const { switchChain } = useSwitchChain();
   const connections = useConnections();
@@ -57,12 +62,6 @@ export default function SwapForm({ rEthEst, numaEst, feeEst }: any) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setShowAlerts(true);
-  }
-
-  let price: number | null = null;
-
-  if (typeof numaEst?.data === 'bigint') {
-    price = Number(formatEther(numaEst.data));
   }
 
   let onSepolia = true;
@@ -165,11 +164,12 @@ export default function SwapForm({ rEthEst, numaEst, feeEst }: any) {
 
       <div className="flex items-center justify-between mt-1 text-[#979fc1]">
         {price ? <p>1 rEth = {price} NUMA</p> : <p></p>}
-        <p>Fee: {100 - (feeEst?.data / 1000) * 100}%</p>
+        <p>Fee: {fee}%</p>
       </div>
       {onSepolia ? (
         address ? (
           <Button
+            disabled={numa === '0' || rEth === '0'}
             type="submit"
             className="rounded-lg py-6 text-lg font-semibold mt-4">
             {isMinting ? 'Mint' : 'Burn'} $NUMA
