@@ -12,6 +12,7 @@ import {
 import abi from '@/contract/abi.json';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
+import { VAULT_ADDRESS } from '@/contract/contract';
 
 type AlertProps = {
   open: boolean;
@@ -59,8 +60,8 @@ export default function Alerts({
 
   async function handleSwap() {
     writeContract({
-      abi: abi.abi,
-      address: '0x94f007172A4128315Bcc117700fC31E79c42B0a6',
+      abi,
+      address: VAULT_ADDRESS,
       functionName: 'buy',
       args: [parseEther('0.08'), address],
     });

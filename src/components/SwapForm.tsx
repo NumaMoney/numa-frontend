@@ -21,12 +21,13 @@ export default function SwapForm({
   fee,
   setShowAlerts,
   price,
+  isMinting,
+  setIsMinting,
 }: any) {
   const [numa, setNuma] = useAtom(numaInputAtom);
   const [rEth, setEth] = useAtom(rEthInputAtom);
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const [isMinting, setIsMinting] = useState(true);
   const setShowConnectors = useSetAtom(connectorAtom);
   const { switchChain } = useSwitchChain();
   const connections = useConnections();
@@ -34,9 +35,11 @@ export default function SwapForm({
   function handleNumaChange(e: ChangeEvent<HTMLInputElement>) {
     setNuma(e.target.value);
 
-    if (typeof rEthEst?.data === 'bigint') {
+    if (typeof rEthEst?.result === 'bigint') {
       setEth(
-        (Number(formatEther(rEthEst.data)) * Number(e.target.value)).toString()
+        (
+          Number(formatEther(rEthEst.result)) * Number(e.target.value)
+        ).toString()
       );
     }
   }
@@ -44,9 +47,11 @@ export default function SwapForm({
   function handleEthChange(e: ChangeEvent<HTMLInputElement>) {
     setEth(e.target.value);
 
-    if (typeof numaEst?.data === 'bigint') {
+    if (typeof numaEst?.result === 'bigint') {
       setNuma(
-        (Number(formatEther(numaEst.data)) * Number(e.target.value)).toString()
+        (
+          Number(formatEther(numaEst.result)) * Number(e.target.value)
+        ).toString()
       );
     }
   }

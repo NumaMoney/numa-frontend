@@ -22,22 +22,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const setPrice = useSetAtom(priceAtom);
-
-  // const numaEst = useReadContract({
-  //   abi: abi.abi,
-  //   address: '0x94f007172A4128315Bcc117700fC31E79c42B0a6',
-  //   functionName: 'getBuyNumaSimulateExtract',
-  //   args: [parseEther('1')],
-  // });
-
-  // useEffect(() => {
-  //   if (typeof numaEst?.data === 'bigint') {
-  //     setPrice(formatEther(numaEst.data));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [numaEst?.data]);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={Geist.className}>

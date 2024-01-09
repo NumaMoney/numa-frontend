@@ -10,36 +10,44 @@ import {
   useConnections,
   useDisconnect,
   useReadContract,
+  useReadContracts,
   useSwitchChain,
 } from 'wagmi';
 import { sepolia } from 'wagmi/chains';
 import abi from '@/contract/abi.json';
 import { formatEther, parseEther } from 'viem';
 import SwapForm from '@/components/SwapForm';
+import { VAULT_ADDRESS } from '@/contract/contract';
+
+const address = VAULT_ADDRESS;
 
 export default function Home() {
   const [isMinting, setIsMinting] = useState(true);
   const [showAlerts, setShowAlerts] = useState(false);
 
-  const numaEst = useReadContract({
-    abi: abi.abi,
-    address: '0x94f007172A4128315Bcc117700fC31E79c42B0a6',
-    functionName: 'getBuyNumaSimulateExtract',
-    args: [parseEther('1')],
+  const result = useReadContracts({
+    contracts: [
+      {
+        abi,
+        address,
+        functionName: 'getBuyNumaSimulateExtract',
+        args: [parseEther('1')],
+      },
+      {
+        abi,
+        address,
+        functionName: 'getSellNumaSimulateExtract',
+        args: [parseEther('1')],
+      },
+      {
+        abi,
+        address,
+        functionName: 'BUY_FEE',
+      },
+    ],
   });
 
-  const rEthEst = useReadContract({
-    abi: abi.abi,
-    address: '0x94f007172A4128315Bcc117700fC31E79c42B0a6',
-    functionName: 'getSellNumaSimulateExtract',
-    args: [parseEther('1')],
-  });
-
-  const feeEst = useReadContract({
-    abi: abi.abi,
-    address: '0x94f007172A4128315Bcc117700fC31E79c42B0a6',
-    functionName: 'BUY_FEE',
-  });
+  const [numaEst, rEthEst, feeEst] = result.data || [null, null, null];
 
   function closeAlerts() {
     setShowAlerts(false);
@@ -48,12 +56,12 @@ export default function Home() {
   let price: number | null = null;
   let fee: number | null = null;
 
-  if (typeof numaEst?.data === 'bigint') {
-    price = Number(formatEther(numaEst.data));
+  if (typeof numaEst?.result === 'bigint') {
+    price = Number(formatEther(numaEst.result));
   }
 
-  if (feeEst?.data) {
-    fee = 100 - (Number(feeEst?.data) / 1000) * 100;
+  if (feeEst?.result) {
+    fee = 100 - (Number(feeEst?.result) / 1000) * 100;
   }
 
   return (
@@ -70,6 +78,8 @@ export default function Home() {
         numaEst={numaEst}
         fee={fee}
         price={price}
+        isMinting={isMinting}
+        setIsMinting={setIsMinting}
         setShowAlerts={setShowAlerts}
       />
       <Alerts
