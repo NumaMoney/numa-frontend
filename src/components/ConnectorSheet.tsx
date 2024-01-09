@@ -24,12 +24,7 @@ export default function ConnectorSheet() {
   }
 
   let filteredConnectors = connectors.filter(
-    (c: any) =>
-      !!c.icon ||
-      (c.id !== 'safe' &&
-        c.id !== 'metaMaskSDK' &&
-        c.id !== 'coinbaseWalletSDK' &&
-        c.name !== 'Injected')
+    (c: any) => c.type !== 'injected' && c.id !== 'safe'
   );
 
   filteredConnectors = filteredConnectors.map((c: any) => {
@@ -38,6 +33,9 @@ export default function ConnectorSheet() {
     }
     if (c.id === 'coinbaseWalletSDK') {
       c.icon = '/coinbaseWallet.svg';
+    }
+    if (c.id === 'metaMaskSDK') {
+      c.icon = '/metamask.svg';
     }
 
     return c;
@@ -64,7 +62,6 @@ export default function ConnectorSheet() {
               key={connector.uid}
               onClick={() => {
                 connect({ connector });
-                setShowConnectors(false);
               }}>
               <Image
                 src={connector.icon || '/logo.svg'}

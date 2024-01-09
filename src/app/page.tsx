@@ -9,14 +9,27 @@ import { useSetAtom } from 'jotai';
 import { ArrowDownUp } from 'lucide-react';
 import Image from 'next/image';
 import { FormEvent, useState } from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
+import {
+  useAccount,
+  useConnections,
+  useDisconnect,
+  useSwitchChain,
+} from 'wagmi';
+import { sepolia } from 'wagmi/chains';
 
 export default function Home() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const [isMinting, setIsMinting] = useState(true);
   const [showAlerts, setShowAlerts] = useState(false);
   const setShowConnectors = useSetAtom(connectorAtom);
+  const { switchChain } = useSwitchChain();
+  const connections = useConnections();
+
+  let onSepolia = true;
+  if (isConnected && connections[0].chainId !== sepolia.id) {
+    onSepolia = false;
+  }
 
   function handleFlip() {
     setIsMinting(!isMinting);
@@ -29,6 +42,10 @@ export default function Home() {
 
   function closeAlerts() {
     setShowAlerts(false);
+  }
+
+  function switchNetwork() {
+    switchChain({ chainId: sepolia.id });
   }
 
   return (
@@ -54,11 +71,11 @@ export default function Home() {
             <p>
               Connected addr. <strong>{formatAddress(address)}</strong>
             </p>
-            {/* <p
+            <p
               className="mt-0 font-semibold cursor-pointer hover:underline"
               onClick={() => disconnect()}>
               Disconnect?
-            </p> */}
+            </p>
           </span>
         ) : null}
 
@@ -130,18 +147,28 @@ export default function Home() {
           <p>Price: $0.45</p>
           <p>Fee: 5%</p>
         </div>
-        {address ? (
-          <Button
-            type="submit"
-            className="rounded-lg py-6 text-lg font-semibold mt-4">
-            {isMinting ? 'Mint' : 'Burn'} $NUMA
-          </Button>
+        {onSepolia ? (
+          address ? (
+            <Button
+              type="submit"
+              className="rounded-lg py-6 text-lg font-semibold mt-4">
+              {isMinting ? 'Mint' : 'Burn'} $NUMA
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              className="rounded-lg py-6 text-lg font-semibold mt-4"
+              onClick={() => setShowConnectors(true)}>
+              Connect
+            </Button>
+          )
         ) : (
           <Button
             type="button"
-            className="rounded-lg py-6 text-lg font-semibold mt-4"
-            onClick={() => setShowConnectors(true)}>
-            Connect
+            variant="destructive"
+            onClick={switchNetwork}
+            className="rounded-lg py-6 text-lg font-semibold mt-4">
+            Switch to Sepolia
           </Button>
         )}
       </form>
