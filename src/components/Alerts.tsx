@@ -11,8 +11,8 @@ import {
 } from 'wagmi';
 import abi from '@/contract/abi.json';
 import { toast } from 'sonner';
-import { parseEther } from 'viem';
-import { VAULT_ADDRESS } from '@/contract/contract';
+import { erc20Abi, parseEther } from 'viem';
+import { NUMA_ADDRESS, VAULT_ADDRESS } from '@/contract/contract';
 import { useAtomValue } from 'jotai';
 import { numaInputAtom, rEthInputAtom } from '@/lib/atom';
 
@@ -22,7 +22,8 @@ type AlertProps = {
   isMinting: boolean;
   fee: number | null;
   price: number | null;
-  balances: any;
+  token: any;
+  refetch: () => void;
 };
 
 const sleep = (ms = 2000) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,7 +34,8 @@ export default function Alerts({
   isMinting,
   price,
   fee,
-  balances,
+  token,
+  refetch,
 }: AlertProps) {
   const [step, setStep] = useState(1);
   const numa = useAtomValue(numaInputAtom);
@@ -52,11 +54,9 @@ export default function Alerts({
     },
   });
 
-  const result = useWaitForTransactionReceipt({
+  const tx = useWaitForTransactionReceipt({
     hash: txHash,
   });
-
-  const tx = useMemo(() => result, [result]);
 
   const { address } = useAccount();
   async function handleClose() {
@@ -70,7 +70,7 @@ export default function Alerts({
       abi,
       address: VAULT_ADDRESS,
       functionName: isMinting ? 'buy' : 'sell',
-      args: [parseEther(numa.toString()), address],
+      args: [parseEther(isMinting ? rEth : numa), address],
     });
 
     setStep(2);
@@ -79,10 +79,11 @@ export default function Alerts({
   useEffect(() => {
     if (tx?.isSuccess && step === 2) {
       toast.success('Swap successful!!');
+      refetch();
       setStep(3);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tx]);
+  }, [tx?.isSuccess]);
 
   return (
     <AlertDialog open={open} onOpenChange={handleClose}>

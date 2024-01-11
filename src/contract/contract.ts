@@ -1,5 +1,6 @@
 import abi from './abi.json';
 
+// export const VAULT_ADDRESS = '0x94f007172A4128315Bcc117700fC31E79c42B0a6';
 export const VAULT_ADDRESS = '0x8Fe15Da7485830f26c37Da8b3c233773EB0623D2';
 
 export const ETH_ADDRESS = '0x1521c67fDFDb670fa21407ebDbBda5F41591646c';

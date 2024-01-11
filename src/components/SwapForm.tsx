@@ -3,17 +3,21 @@ import formatAddress from '@/lib/formatAddress';
 import { cn } from '@/lib/utils';
 import { useAtom, useSetAtom } from 'jotai';
 import Image from 'next/image';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { formatEther } from 'viem';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { erc20Abi, formatEther, parseEther } from 'viem';
 import {
   useAccount,
   useConnections,
   useDisconnect,
   useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
 import { Button } from './ui/button';
 import { ArrowDownUp } from 'lucide-react';
 import { sepolia } from 'viem/chains';
+import { toast } from 'sonner';
+import { ETH_ADDRESS, NUMA_ADDRESS, VAULT_ADDRESS } from '@/contract/contract';
 
 export default function SwapForm({
   rEthEst,
@@ -22,8 +26,9 @@ export default function SwapForm({
   setShowAlerts,
   price,
   isMinting,
-  balances,
+  token,
   setIsMinting,
+  refetch,
 }: any) {
   const [numa, setNuma] = useAtom(numaInputAtom);
   const [rEth, setEth] = useAtom(rEthInputAtom);
@@ -32,6 +37,30 @@ export default function SwapForm({
   const setShowConnectors = useSetAtom(connectorAtom);
   const { switchChain } = useSwitchChain();
   const connections = useConnections();
+
+  const { writeContract, data: txHash } = useWriteContract({
+    mutation: {
+      onSuccess: () => {
+        toast.success('Approval transaction sent');
+      },
+      onError: (error: any) => {
+        console.log(error);
+        toast.error(error.shortMessage ? error.shortMessage : error.message);
+      },
+    },
+  });
+
+  const tx = useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  useEffect(() => {
+    if (tx?.isSuccess) {
+      toast.success('Approved!, try swapping again.');
+      refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tx?.isSuccess]);
 
   function handleNumaChange(e: ChangeEvent<HTMLInputElement>) {
     setNuma(e.target.value);
@@ -67,6 +96,32 @@ export default function SwapForm({
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (isMinting && Number(token?.ethAllowance) <= Number(rEth)) {
+      writeContract({
+        abi: erc20Abi,
+        address: ETH_ADDRESS,
+        functionName: 'approve',
+        args: [VAULT_ADDRESS, parseEther(rEth)],
+      });
+      toast.info('Need approval, continue in wallet.');
+
+      return;
+    }
+
+    if (!isMinting && Number(token?.numaAllowance) <= Number(numa)) {
+      writeContract({
+        abi: erc20Abi,
+        address: NUMA_ADDRESS,
+        functionName: 'approve',
+        args: [VAULT_ADDRESS, parseEther(numa)],
+      });
+
+      toast.info('Need approval, continue in wallet.');
+
+      return;
+    }
+
     setShowAlerts(true);
   }
 
@@ -108,9 +163,9 @@ export default function SwapForm({
           )}>
           <span className="w-full flex items-center justify-between text-sm text-gray-600">
             {isMinting ? <p>You pay</p> : <p>You receive</p>}
-            {balances?.ethBalance ? (
+            {token?.ethBalance ? (
               <p className="whitespace-nowrap">
-                Balance: {balances?.ethBalance}
+                Balance: {Number(token?.ethBalance).toFixed(2)}
               </p>
             ) : null}
           </span>
@@ -148,9 +203,9 @@ export default function SwapForm({
           )}>
           <span className="w-full flex items-center justify-between text-sm text-gray-600">
             {!isMinting ? <p>You pay</p> : <p>You receive</p>}
-            {balances?.numaBalance ? (
+            {token?.numaBalance ? (
               <p className="whitespace-nowrap">
-                Balance: {balances?.numaBalance}
+                Balance: {Number(token?.numaBalance).toFixed(2)}
               </p>
             ) : null}
           </span>
@@ -183,10 +238,11 @@ export default function SwapForm({
       {onSepolia ? (
         address ? (
           <Button
-            disabled={numa === '0' || rEth === '0'}
+            disabled={numa === '0' || rEth === '0' || tx?.isLoading}
             type="submit"
             className="rounded-lg py-6 text-lg font-semibold mt-4">
-            {isMinting ? 'Mint' : 'Burn'} $NUMA
+            {tx?.isLoading ? 'Waiting for approval...' : null}
+            {tx?.isLoading ? null : isMinting ? 'Mint $NUMA' : 'Burn $NUMA'}
           </Button>
         ) : (
           <Button
