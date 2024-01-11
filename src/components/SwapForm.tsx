@@ -232,7 +232,7 @@ export default function SwapForm({
       </div>
 
       <div className="flex items-center justify-between mt-1 text-[#979fc1]">
-        {price ? <p>1 rEth = {price} NUMA</p> : <p></p>}
+        {price ? <p>1 rEth = {Number(price).toFixed(4)} NUMA</p> : <p></p>}
         <p>Fee: {fee}%</p>
       </div>
       {onSepolia ? (
