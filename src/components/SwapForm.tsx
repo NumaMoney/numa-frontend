@@ -22,6 +22,7 @@ export default function SwapForm({
   setShowAlerts,
   price,
   isMinting,
+  balances,
   setIsMinting,
 }: any) {
   const [numa, setNuma] = useAtom(numaInputAtom);
@@ -107,7 +108,11 @@ export default function SwapForm({
           )}>
           <span className="w-full flex items-center justify-between text-sm text-gray-600">
             {isMinting ? <p>You pay</p> : <p>You receive</p>}
-            <p className="whitespace-nowrap">Balance: 1.249</p>
+            {balances?.ethBalance ? (
+              <p className="whitespace-nowrap">
+                Balance: {balances?.ethBalance}
+              </p>
+            ) : null}
           </span>
           <span className="w-full flex items-center justify-between text-sm">
             <input
@@ -143,7 +148,11 @@ export default function SwapForm({
           )}>
           <span className="w-full flex items-center justify-between text-sm text-gray-600">
             {!isMinting ? <p>You pay</p> : <p>You receive</p>}
-            <p className="whitespace-nowrap">Balance: 0</p>
+            {balances?.numaBalance ? (
+              <p className="whitespace-nowrap">
+                Balance: {balances?.numaBalance}
+              </p>
+            ) : null}
           </span>
           <span className="w-full flex items-center justify-between text-sm">
             <input

@@ -13,6 +13,8 @@ import abi from '@/contract/abi.json';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
 import { VAULT_ADDRESS } from '@/contract/contract';
+import { useAtomValue } from 'jotai';
+import { numaInputAtom, rEthInputAtom } from '@/lib/atom';
 
 type AlertProps = {
   open: boolean;
@@ -20,6 +22,7 @@ type AlertProps = {
   isMinting: boolean;
   fee: number | null;
   price: number | null;
+  balances: any;
 };
 
 const sleep = (ms = 2000) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -30,8 +33,11 @@ export default function Alerts({
   isMinting,
   price,
   fee,
+  balances,
 }: AlertProps) {
   const [step, setStep] = useState(1);
+  const numa = useAtomValue(numaInputAtom);
+  const rEth = useAtomValue(rEthInputAtom);
 
   const { writeContract, data: txHash } = useWriteContract({
     mutation: {
@@ -40,6 +46,7 @@ export default function Alerts({
       },
       onError: (error: any) => {
         setStep(1);
+        console.log(error);
         toast.error(error.shortMessage ? error.shortMessage : error.message);
       },
     },
@@ -62,8 +69,8 @@ export default function Alerts({
     writeContract({
       abi,
       address: VAULT_ADDRESS,
-      functionName: 'buy',
-      args: [parseEther('0.08'), address],
+      functionName: isMinting ? 'buy' : 'sell',
+      args: [parseEther(numa.toString()), address],
     });
 
     setStep(2);
