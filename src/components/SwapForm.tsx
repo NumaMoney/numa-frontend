@@ -167,7 +167,9 @@ export default function SwapForm({
               <p className="whitespace-nowrap">
                 Balance: {Number(token?.ethBalance).toFixed(2)}
               </p>
-            ) : null}
+            ) : (
+              <p className="whitespace-nowrap">Balance: 0</p>
+            )}
           </span>
           <span className="w-full flex items-center justify-between text-sm">
             <input
@@ -207,7 +209,9 @@ export default function SwapForm({
               <p className="whitespace-nowrap">
                 Balance: {Number(token?.numaBalance).toFixed(2)}
               </p>
-            ) : null}
+            ) : (
+              <p className="whitespace-nowrap">Balance: 0</p>
+            )}
           </span>
           <span className="w-full flex items-center justify-between text-sm">
             <input
