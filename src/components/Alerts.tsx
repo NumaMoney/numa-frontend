@@ -21,7 +21,7 @@ type AlertProps = {
   onClose: () => void;
   isMinting: boolean;
   fee: number | null;
-  price: number | null;
+  numaPrice: number;
   token: any;
   refetch: () => void;
 };
@@ -32,7 +32,7 @@ export default function Alerts({
   open,
   onClose,
   isMinting,
-  price,
+  numaPrice,
   fee,
   token,
   refetch,
@@ -92,7 +92,7 @@ export default function Alerts({
           <ConfirmSwapContent
             isMinting={isMinting}
             handleSwap={handleSwap}
-            price={price}
+            numaPrice={numaPrice}
             fee={fee}
           />
         ) : null}

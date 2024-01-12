@@ -8,6 +8,8 @@ import abi from '@/contract/abi.json';
 import { erc20Abi, formatEther, parseEther } from 'viem';
 import SwapForm from '@/components/SwapForm';
 import { ETH_ADDRESS, NUMA_ADDRESS, VAULT_ADDRESS } from '@/contract/contract';
+import useEthPrice from '@/hooks/useEthPrice';
+import getNumaUsd from '@/lib/getNumaUsd';
 
 const address = VAULT_ADDRESS;
 
@@ -15,6 +17,8 @@ export default function Home() {
   const [isMinting, setIsMinting] = useState(true);
   const [showAlerts, setShowAlerts] = useState(false);
   const { address: owner } = useAccount();
+
+  const ethPrice = useEthPrice();
 
   const result = useReadContracts({
     contracts: [
@@ -76,12 +80,7 @@ export default function Home() {
     setShowAlerts(false);
   }
 
-  let price: number | null = null;
   let fee: number | null = null;
-
-  if (typeof numaEst?.result === 'bigint') {
-    price = Number(formatEther(numaEst.result));
-  }
 
   if (feeEst?.result) {
     fee = 100 - (Number(feeEst?.result) / 1000) * 100;
@@ -98,7 +97,7 @@ export default function Home() {
       : null,
   };
 
-  console.log(token);
+  const numaPrice = getNumaUsd(ethPrice, numaEst?.result);
 
   return (
     <main className="relative flex h-full flex-col items-center justify-between overflow-hidden">
@@ -113,7 +112,7 @@ export default function Home() {
         rEthEst={rEthEst}
         numaEst={numaEst}
         fee={fee}
-        price={price}
+        numaPrice={numaPrice}
         token={token}
         isMinting={isMinting}
         setIsMinting={setIsMinting}
@@ -126,7 +125,7 @@ export default function Home() {
         isMinting={isMinting}
         token={token}
         fee={fee}
-        price={price}
+        numaPrice={numaPrice}
         refetch={result?.refetch}
       />
     </main>

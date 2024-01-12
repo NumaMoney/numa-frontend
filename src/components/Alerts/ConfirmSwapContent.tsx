@@ -14,7 +14,7 @@ import { numaInputAtom, rEthInputAtom } from '@/lib/atom';
 export default function ConfirmSwapContent({
   isMinting,
   handleSwap,
-  price,
+  numaPrice,
   fee,
 }: any) {
   const rEth = useAtomValue(rEthInputAtom);
@@ -88,8 +88,8 @@ export default function ConfirmSwapContent({
         </div>
         <div className="flex flex-col gap-1 bg-black p-4 rounded-lg">
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
-            <p>Rate</p>
-            {price ? <p>1 rEth = {price} NUMA</p> : <p>-</p>}
+            <p>Price</p>
+            {numaPrice ? <p>${numaPrice.toFixed(2)}</p> : <p>-</p>}
           </div>
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Fee</p>

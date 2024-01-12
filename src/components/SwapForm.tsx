@@ -24,7 +24,7 @@ export default function SwapForm({
   numaEst,
   fee,
   setShowAlerts,
-  price,
+  numaPrice,
   isMinting,
   token,
   setIsMinting,
@@ -236,7 +236,7 @@ export default function SwapForm({
       </div>
 
       <div className="flex items-center justify-between mt-1 text-[#979fc1]">
-        {price ? <p>1 rEth = {Number(price).toFixed(4)} NUMA</p> : <p></p>}
+        {numaPrice ? <p>Price: ${numaPrice.toFixed(2)}</p> : <p></p>}
         <p>Fee: {fee}%</p>
       </div>
 
