@@ -97,19 +97,19 @@ export default function SwapForm({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (isMinting && Number(token?.ethAllowance) <= Number(rEth)) {
+    if (isMinting && Number(token?.ethAllowance) < Number(rEth)) {
       writeContract({
         abi: erc20Abi,
         address: ETH_ADDRESS,
         functionName: 'approve',
         args: [VAULT_ADDRESS, parseEther(rEth)],
       });
-      toast.info('Need approval, continue in wallet.');
+      toast.info('Proceed in wallet.');
 
       return;
     }
 
-    if (!isMinting && Number(token?.numaAllowance) <= Number(numa)) {
+    if (!isMinting && Number(token?.numaAllowance) < Number(numa)) {
       writeContract({
         abi: erc20Abi,
         address: NUMA_ADDRESS,
@@ -117,7 +117,7 @@ export default function SwapForm({
         args: [VAULT_ADDRESS, parseEther(numa)],
       });
 
-      toast.info('Need approval, continue in wallet.');
+      toast.info('Proceed in wallet.');
 
       return;
     }
@@ -239,32 +239,87 @@ export default function SwapForm({
         {price ? <p>1 rEth = {Number(price).toFixed(4)} NUMA</p> : <p></p>}
         <p>Fee: {fee}%</p>
       </div>
-      {onSepolia ? (
-        address ? (
-          <Button
-            disabled={numa === '0' || rEth === '0' || tx?.isLoading}
-            type="submit"
-            className="rounded-lg py-6 text-lg font-semibold mt-4">
-            {tx?.isLoading ? 'Waiting for approval...' : null}
-            {tx?.isLoading ? null : isMinting ? 'Mint $NUMA' : 'Burn $NUMA'}
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            className="rounded-lg py-6 text-lg font-semibold mt-4"
-            onClick={() => setShowConnectors(true)}>
-            Connect
-          </Button>
-        )
-      ) : (
-        <Button
-          type="button"
-          variant="destructive"
-          onClick={switchNetwork}
-          className="rounded-lg py-6 text-lg font-semibold mt-4">
-          Switch to Sepolia
-        </Button>
-      )}
+
+      <Buttons
+        onSepolia={onSepolia}
+        isConnected={isConnected}
+        tx={tx}
+        setShowConnectors={setShowConnectors}
+        switchNetwork={switchNetwork}
+        isMinting={isMinting}
+        token={token}
+        numa={numa}
+        rEth={rEth}
+      />
     </form>
+  );
+}
+
+function Buttons({
+  onSepolia,
+  isConnected,
+  tx,
+  setShowConnectors,
+  switchNetwork,
+  isMinting,
+  token,
+  numa,
+  rEth,
+}: any) {
+  if (!isConnected) {
+    return (
+      <Button
+        type="button"
+        className="rounded-lg py-6 text-lg font-semibold mt-4"
+        onClick={() => setShowConnectors(true)}>
+        Connect
+      </Button>
+    );
+  }
+
+  if (!onSepolia) {
+    return (
+      <Button
+        type="button"
+        variant="destructive"
+        onClick={switchNetwork}
+        className="rounded-lg py-6 text-lg font-semibold mt-4">
+        Switch to Sepolia
+      </Button>
+    );
+  }
+
+  if (tx?.isLoading) {
+    return (
+      <Button
+        disabled={true}
+        type="submit"
+        className="rounded-lg py-6 text-lg font-semibold mt-4">
+        Waiting for approval...
+      </Button>
+    );
+  }
+
+  if (
+    (isMinting && Number(token?.ethAllowance) < Number(rEth)) ||
+    (!isMinting && Number(token?.numaAllowance) < Number(numa))
+  ) {
+    return (
+      <Button
+        type="submit"
+        className="rounded-lg py-6 text-lg font-semibold mt-4">
+        Approve
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      disabled={numa === '0' || rEth === '0' || tx?.isLoading}
+      type="submit"
+      className="rounded-lg py-6 text-lg font-semibold mt-4">
+      {tx?.isLoading ? 'Waiting for approval...' : null}
+      {tx?.isLoading ? null : isMinting ? 'Mint $NUMA' : 'Burn $NUMA'}
+    </Button>
   );
 }
