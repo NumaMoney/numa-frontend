@@ -20,7 +20,7 @@ export default function SwapSuccessContent({ txHash }: { txHash?: string }) {
       </AlertDialogHeader>
       <div className="flex flex-col justify-center items-center">
         <Image
-          src="/success.png"
+          src="/successIcon.png"
           width={60}
           height={60}
           alt="Success"
