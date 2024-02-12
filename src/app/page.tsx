@@ -2,7 +2,7 @@
 
 import Alerts from '@/components/Alerts';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount, useReadContracts } from 'wagmi';
 import abi from '@/contract/abi.json';
 import { erc20Abi, formatEther, parseEther } from 'viem';
@@ -65,6 +65,16 @@ export default function Home() {
       },
     ],
   });
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      result.refetch();
+    }, 7000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const [
     numaEst,
