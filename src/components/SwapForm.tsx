@@ -27,6 +27,7 @@ export default function SwapForm({
   numaPrice,
   isMinting,
   token,
+  rEthMaxLimit,
   setIsMinting,
   refetch,
 }: any) {
@@ -76,6 +77,14 @@ export default function SwapForm({
 
   function handleEthChange(e: ChangeEvent<HTMLInputElement>) {
     setEth(e.target.value);
+
+    if (Number(e.target.value)> rEthMaxLimit)
+    {
+      let text = `To proceed, please split into more than one transaction. The protocol limits single transactions to 10% of the vault value to prevent manipulation. At present, each transaction should be less than ${Math.round(Number(rEthMaxLimit) * 1000) / 1000} rETH. You are free to submit as many transactions as you wish`;
+      toast.error(text);
+    }
+
+
 
     if (typeof numaEst?.result === 'bigint') {
       setNuma(
@@ -247,6 +256,7 @@ export default function SwapForm({
         setShowConnectors={setShowConnectors}
         switchNetwork={switchNetwork}
         isMinting={isMinting}
+        rEthMaxLimit = {rEthMaxLimit}
         token={token}
         numa={numa}
         rEth={rEth}
@@ -262,6 +272,7 @@ function Buttons({
   setShowConnectors,
   switchNetwork,
   isMinting,
+  rEthMaxLimit,
   token,
   numa,
   rEth,
@@ -299,6 +310,36 @@ function Buttons({
       </Button>
     );
   }
+
+  // ttc
+  if (
+    (isMinting && Number(rEthMaxLimit) < Number(rEth)) )
+   {
+    return (
+      <Button
+      disabled={true}
+        type="submit"
+        className="rounded-lg py-6 text-lg font-semibold mt-4">
+        Max transaction = {Math.round(Number(rEthMaxLimit) * 1000) / 1000}
+      </Button>
+    );
+  }
+
+  if (
+    (isMinting && Number(token?.ethBalance) < Number(rEth)) ||
+    (!isMinting && Number(token?.numaBalance) < Number(numa))
+  ) {
+    return (
+      <Button
+      disabled={true}
+        type="submit"
+        className="rounded-lg py-6 text-lg font-semibold mt-4">
+        Not enough balance
+      </Button>
+    );
+  }
+
+
 
   if (
     (isMinting && Number(token?.ethAllowance) < Number(rEth)) ||
