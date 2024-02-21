@@ -41,7 +41,7 @@ export default function SwapForm({
   const { writeContract, data: txHash } = useWriteContract({
     mutation: {
       onSuccess: () => {
-        toast.success('Approval transaction sent');
+        toast.success('Approval transaction pending');
       },
       onError: (error: any) => {
         console.log(error);
@@ -56,7 +56,7 @@ export default function SwapForm({
 
   useEffect(() => {
     if (tx?.isSuccess) {
-      toast.success('Approved!, try swapping again.');
+      toast.success('Approved! You may now proceed with your swap');
       refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,7 +104,7 @@ export default function SwapForm({
         functionName: 'approve',
         args: [VAULT_ADDRESS, parseEther(rEth)],
       });
-      toast.info('Proceed in wallet.');
+      toast.info('Proceed in wallet');
 
       return;
     }
@@ -117,7 +117,7 @@ export default function SwapForm({
         args: [VAULT_ADDRESS, parseEther(numa)],
       });
 
-      toast.info('Proceed in wallet.');
+      toast.info('Proceed in wallet');
 
       return;
     }

@@ -44,7 +44,7 @@ export default function Alerts({
   const { writeContract, data: txHash } = useWriteContract({
     mutation: {
       onSuccess: () => {
-        toast.success('Swap Initiated');
+        toast.success('Swap transaction pending');
       },
       onError: (error: any) => {
         setStep(1);
@@ -78,7 +78,7 @@ export default function Alerts({
 
   useEffect(() => {
     if (tx?.isSuccess && step === 2) {
-      toast.success('Swap successful!!');
+      toast.success('Swap successful!');
       refetch();
       setStep(3);
     }

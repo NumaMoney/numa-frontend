@@ -21,7 +21,7 @@ export default function ProcessingContent({ txHash }: { txHash?: string }) {
         <Loader2 size={60} className="animate-spin" />
 
         <h3 className="mt-4 text-lg">
-          {txHash ? 'Swap Initiated' : 'Waiting for Confirmation'}
+          {txHash ? 'Swap transaction pending' : 'Waiting for Confirmation'}
         </h3>
         {txHash ? (
           <Link

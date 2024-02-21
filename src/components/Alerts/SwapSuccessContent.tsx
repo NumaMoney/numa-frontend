@@ -26,7 +26,7 @@ export default function SwapSuccessContent({ txHash }: { txHash?: string }) {
           alt="Success"
           className="mx-auto"
         />
-        <h3 className="mt-4 text-lg">Swap successful!!</h3>
+        <h3 className="mt-4 text-lg">Swap successful!</h3>
         {txHash ? (
           <Link
             target="_blank"
