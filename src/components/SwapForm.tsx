@@ -63,6 +63,17 @@ export default function SwapForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tx?.isSuccess]);
 
+  useEffect(() => {
+    if (!rEthEst?.result) return;
+
+    if (isMinting) {
+      setNuma((Number(formatEther(numaEst.result)) * Number(rEth)).toString());
+    } else {
+      setEth((Number(formatEther(rEthEst.result)) * Number(numa)).toString());
+    }
+
+  }, [rEthEst?.result]);
+  
   function handleNumaChange(e: ChangeEvent<HTMLInputElement>) {
     setNuma(e.target.value);
 
