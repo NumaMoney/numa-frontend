@@ -65,12 +65,20 @@ export default function Alerts({
     setStep(1);
   }
 
-  async function handleSwap() {
+  async function handleSwap() 
+  {
+    let minStr = isMinting ? rEth : numa;
+    let minNb = Number(minStr);
+    // adding slippage (0.5% hardcoded for now)
+    minNb = minNb - 0.005*minNb;
+    minStr = minNb.toString();
+    let minBN = parseEther(minStr);
     writeContract({
       abi,
       address: VAULT_ADDRESS,
       functionName: isMinting ? 'buy' : 'sell',
-      args: [parseEther(isMinting ? rEth : numa), address],
+
+      args: [parseEther(isMinting ? rEth : numa),minBN, address],
     });
 
     setStep(2);

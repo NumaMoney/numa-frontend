@@ -38,12 +38,12 @@ export default function Home() {
       {
         abi,
         address,
-        functionName: 'BUY_FEE',
+        functionName: 'buy_fee',
       },
       {
         abi,
         address,
-        functionName: 'MAX_PERCENT',
+        functionName: 'max_percent',
       },
       {
         abi: erc20Abi,

@@ -20,16 +20,6 @@
         "internalType": "address",
         "name": "_oracleAddress",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_nuAssetManagerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_decayingDenominator",
-        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -109,6 +99,19 @@
     ],
     "name": "SafeERC20FailedOperation",
     "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "AddedToRemovedSupply",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -222,6 +225,25 @@
         "type": "address"
       }
     ],
+    "name": "OwnershipTransferStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
     "name": "OwnershipTransferred",
     "type": "event"
   },
@@ -236,6 +258,38 @@
       }
     ],
     "name": "Paused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "RemovedFromRemoveSupply",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_rwd",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_currentvalueWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "RewardsExtracted",
     "type": "event"
   },
   {
@@ -295,19 +349,6 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "nuAssetManager",
-        "type": "address"
-      }
-    ],
-    "name": "SetNuAssetManager",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
         "name": "oracle",
         "type": "address"
       }
@@ -326,6 +367,12 @@
       }
     ],
     "name": "SetVaultManager",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "StartDecay",
     "type": "event"
   },
   {
@@ -356,59 +403,7 @@
   },
   {
     "inputs": [],
-    "name": "BUY_FEE",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DECAY_BASE_100",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "FEES",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "FEE_BASE_1000",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MAX_PERCENT",
     "outputs": [
       {
         "internalType": "uint16",
@@ -434,39 +429,7 @@
   },
   {
     "inputs": [],
-    "name": "SELL_FEE",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "_maxPercent",
-        "type": "uint16"
-      }
-    ],
-    "name": "SetMaxPercent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "addToRemovedSupply",
+    "name": "acceptOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -476,6 +439,11 @@
       {
         "internalType": "uint256",
         "name": "_inputAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_minNumaAmount",
         "type": "uint256"
       },
       {
@@ -491,25 +459,12 @@
   },
   {
     "inputs": [],
-    "name": "decayingDenominator",
+    "name": "buy_fee",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "decaytimestamp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -520,6 +475,19 @@
     "name": "extractRewards",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fees",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -574,32 +542,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getNumaSupply",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getRemovedWalletsList",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -632,19 +574,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "isdecaying",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -691,12 +620,12 @@
   },
   {
     "inputs": [],
-    "name": "nuAssetManager",
+    "name": "max_percent",
     "outputs": [
       {
-        "internalType": "contract INuAssetManager",
+        "internalType": "uint16",
         "name": "",
-        "type": "address"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -720,7 +649,7 @@
     "name": "oracle",
     "outputs": [
       {
-        "internalType": "contract IVaultOracle",
+        "internalType": "contract IVaultOracleSingle",
         "name": "",
         "type": "address"
       }
@@ -762,16 +691,16 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "pendingOwner",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "_address",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "removeFromRemovedSupply",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -820,6 +749,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "_minTokenAmount",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "_receiver",
         "type": "address"
@@ -828,6 +762,19 @@
     "name": "sell",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sell_fee",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -872,12 +819,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_nuAssetManager",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "_maxPercent",
+        "type": "uint16"
       }
     ],
-    "name": "setNuAssetManager",
+    "name": "setMaxPercent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -948,13 +895,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "startDecaying",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -985,24 +925,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]
