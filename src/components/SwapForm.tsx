@@ -92,7 +92,7 @@ export default function SwapForm({
     if (Number(e.target.value)> rEthMaxLimit)
     {
       let text = `To proceed, please split into more than one transaction. The protocol limits single transactions to 10% of the vault value to prevent manipulation. At present, each transaction should be less than ${Math.round(Number(rEthMaxLimit) * 1000) / 1000} rETH. You are free to submit as many transactions as you wish`;
-      toast.error(text);
+      toast.error(text, { duration: 10000 });
     }
 
 
