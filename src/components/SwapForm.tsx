@@ -331,7 +331,7 @@ function Buttons({
       disabled={true}
         type="submit"
         className="rounded-lg py-6 text-lg font-semibold mt-4">
-        Max transaction = {Math.round(Number(rEthMaxLimit) * 1000) / 1000}
+        Max transaction = {Math.round(Number(rEthMaxLimit) * 1000) / 1000} rETH
       </Button>
     );
   }
