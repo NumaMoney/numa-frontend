@@ -70,15 +70,20 @@ export default function Alerts({
     let minStr = isMinting ? rEth : numa;
     let minNb = Number(minStr);
     // adding slippage (0.5% hardcoded for now)
+    console.log(minNb);
     minNb = minNb - 0.005*minNb;
+    console.log(minNb);
     minStr = minNb.toString();
+    console.log(minStr);
     let minBN = parseEther(minStr);
+    console.log(minBN);
     writeContract({
       abi,
       address: VAULT_ADDRESS,
       functionName: isMinting ? 'buy' : 'sell',
 
-      args: [parseEther(isMinting ? rEth : numa),minBN, address],
+     // args: [parseEther(isMinting ? rEth : numa),minBN, address],
+     args: [parseEther(isMinting ? rEth : numa),0, address],
     });
 
     setStep(2);
