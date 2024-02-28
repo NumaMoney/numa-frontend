@@ -30,7 +30,7 @@ export default function SwapSuccessContent({ txHash }: { txHash?: string }) {
         {txHash ? (
           <Link
             target="_blank"
-            href={`https://sepolia.etherscan.io/tx/${txHash}`}
+            href={`https://arbiscan.io/tx/${txHash}`}
             className="text-xs mt-2 text-blue-500">
             View on Explorer
           </Link>

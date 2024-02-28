@@ -15,7 +15,7 @@ import {
 } from 'wagmi';
 import { Button } from './ui/button';
 import { ArrowDownUp } from 'lucide-react';
-import { sepolia } from 'viem/chains';
+import { sepolia,arbitrum } from 'viem/chains';
 import { toast } from 'sonner';
 import { ETH_ADDRESS, NUMA_ADDRESS, VAULT_ADDRESS } from '@/contract/contract';
 
@@ -107,7 +107,8 @@ export default function SwapForm({
   }
 
   function switchNetwork() {
-    switchChain({ chainId: sepolia.id });
+    //switchChain({ chainId: sepolia.id });
+    switchChain({ chainId: arbitrum.id });
   }
 
   function handleFlip() {
@@ -145,10 +146,16 @@ export default function SwapForm({
     setShowAlerts(true);
   }
 
-  let onSepolia = true;
-  if (isConnected && connections[0].chainId !== sepolia.id) {
-    onSepolia = false;
+  // let onSepolia = true;
+  // if (isConnected && connections[0].chainId !== sepolia.id) {
+  //   onSepolia = false;
+  // }
+
+  let onArbitrum = true;
+  if (isConnected && connections[0].chainId !== arbitrum.id) {
+    onArbitrum = false;
   }
+
 
   return (
     <form
@@ -261,7 +268,8 @@ export default function SwapForm({
       </div>
 
       <Buttons
-        onSepolia={onSepolia}
+        //onSepolia={onSepolia}
+        onArbitrum={onArbitrum}
         isConnected={isConnected}
         tx={tx}
         setShowConnectors={setShowConnectors}
@@ -277,7 +285,8 @@ export default function SwapForm({
 }
 
 function Buttons({
-  onSepolia,
+  //onSepolia,
+  onArbitrum,
   isConnected,
   tx,
   setShowConnectors,
@@ -299,17 +308,30 @@ function Buttons({
     );
   }
 
-  if (!onSepolia) {
+  // if (!onSepolia) {
+  //   return (
+  //     <Button
+  //       type="button"
+  //       variant="destructive"
+  //       onClick={switchNetwork}
+  //       className="rounded-lg py-6 text-lg font-semibold mt-4">
+  //       Switch to Sepolia
+  //     </Button>
+  //   );
+  // }
+
+  if (!onArbitrum) {
     return (
       <Button
         type="button"
         variant="destructive"
         onClick={switchNetwork}
         className="rounded-lg py-6 text-lg font-semibold mt-4">
-        Switch to Sepolia
+        Switch to Arbitrum
       </Button>
     );
   }
+
 
   if (tx?.isLoading) {
     return (

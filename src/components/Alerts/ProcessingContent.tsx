@@ -25,7 +25,7 @@ export default function ProcessingContent({ txHash }: { txHash?: string }) {
         </h3>
         {txHash ? (
           <Link
-            href={`https://sepolia.etherscan.io/tx/${txHash}`}
+            href={`https://arbiscan.io/tx/${txHash}`}
             target="_blank"
             className="text-xs mt-2 text-blue-500">
             View on Explorer

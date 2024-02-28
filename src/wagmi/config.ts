@@ -1,5 +1,5 @@
 import { createConfig, http } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains';
+import { mainnet, sepolia,arbitrum } from 'wagmi/chains';
 import {
   coinbaseWallet,
   injected,
@@ -17,7 +17,8 @@ declare module 'wagmi' {
 const projectId = '54a1a167063aca3350b294e306774934';
 
 export const config = createConfig({
-  chains: [sepolia],
+  //chains: [sepolia],
+  chains: [arbitrum],
   syncConnectedChain: true,
   multiInjectedProviderDiscovery: false,
   ssr: true,
@@ -31,6 +32,7 @@ export const config = createConfig({
     walletConnect({ projectId }),
   ],
   transports: {
-    [sepolia.id]: http(),
+    // [sepolia.id]: http(),
+    [arbitrum.id]: http(),
   },
 });

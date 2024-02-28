@@ -98,7 +98,8 @@ export default function ConfirmSwapContent({
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Network cost</p>
             <span className="flex gap-1">
-              <p>{'<0.05'} Sepolia</p>
+              {/* <p>{'<0.05'} Sepolia</p> */}
+              <p>{'<0.05'} Arbitrum</p>
               <Image
                 src="/rEthIcon.png"
                 width={20}
