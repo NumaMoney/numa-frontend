@@ -192,7 +192,7 @@ export default function SwapForm({
             {isMinting ? <p>You pay</p> : <p>You receive</p>}
             {token?.ethBalance ? (
               <p className="whitespace-nowrap">
-                Balance: {Number(token?.ethBalance).toFixed(2)}
+                Balance: {Number(token?.ethBalance).toFixed(5)}
               </p>
             ) : (
               <p className="whitespace-nowrap">Balance: 0</p>
@@ -234,7 +234,7 @@ export default function SwapForm({
             {!isMinting ? <p>You pay</p> : <p>You receive</p>}
             {token?.numaBalance ? (
               <p className="whitespace-nowrap">
-                Balance: {Number(token?.numaBalance).toFixed(2)}
+                Balance: {Number(token?.numaBalance).toFixed(5)}
               </p>
             ) : (
               <p className="whitespace-nowrap">Balance: 0</p>
@@ -263,7 +263,7 @@ export default function SwapForm({
       </div>
 
       <div className="flex items-center justify-between mt-1 text-[#979fc1]">
-        {numaPrice ? <p>Price: ${numaPrice.toFixed(2)}</p> : <p></p>}
+        {numaPrice ? <p>Price: ${numaPrice.toFixed(5)}</p> : <p></p>}
         <p>Fee: {fee}%</p>
       </div>
 

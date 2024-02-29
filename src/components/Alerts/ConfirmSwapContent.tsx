@@ -55,7 +55,7 @@ export default function ConfirmSwapContent({
               <p className="text-lg">rETH</p>
             </span>
             <h3 className={cn('text-3xl mt-2', !isMinting && 'ml-auto')}>
-              {Number(rEth).toFixed(2)}
+              {Number(rEth).toFixed(5)}
             </h3>
           </div>
           <MoveRight size={40} className="order-2" />
@@ -82,14 +82,14 @@ export default function ConfirmSwapContent({
               />
             </span>
             <h3 className={cn('text-3xl mt-2 ml-auto', !isMinting && 'ml-0')}>
-              {Number(numa).toFixed(2)}
+              {Number(numa).toFixed(5)}
             </h3>
           </div>
         </div>
         <div className="flex flex-col gap-1 bg-black p-4 rounded-lg">
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Price</p>
-            {numaPrice ? <p>${numaPrice.toFixed(2)}</p> : <p>-</p>}
+            {numaPrice ? <p>${numaPrice.toFixed(5)}</p> : <p>-</p>}
           </div>
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Fee</p>
