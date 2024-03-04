@@ -264,7 +264,7 @@ export default function SwapForm({
 
       <div className="flex items-center justify-between mt-1 text-[#979fc1]">
         {numaPrice ? <p>Price: ${numaPrice.toFixed(5)}</p> : <p></p>}
-        <p>Fee: {fee}%</p>
+        {/* <p>Fee: {fee}%</p> */}
       </div>
 
       <Buttons

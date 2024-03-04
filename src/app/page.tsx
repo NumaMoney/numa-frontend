@@ -121,7 +121,7 @@ export default function Home() {
       : null,
   };
 
-  const numaPrice = getNumaUsd(ethPrice, numaEst?.result);
+  const numaPrice = getNumaUsd(ethPrice,isMinting, numaEst?.result,rEthEst?.result);
 
   const rEthMaxLimit = getREthMax(maxPercent?.result,vaultBalance?.result)//maxPercent * vaultBalance * 0.001;
 

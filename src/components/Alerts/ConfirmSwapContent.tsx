@@ -91,10 +91,10 @@ export default function ConfirmSwapContent({
             <p>Price</p>
             {numaPrice ? <p>${numaPrice.toFixed(5)}</p> : <p>-</p>}
           </div>
-          <div className="flex items-center justify-between py-1 text-sm text-gray-400">
+          {/* <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Fee</p>
             {fee ? <p>{fee}%</p> : <p>-</p>}
-          </div>
+          </div> */}
           <div className="flex items-center justify-between py-1 text-sm text-gray-400">
             <p>Network cost</p>
             <span className="flex gap-1">
