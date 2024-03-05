@@ -162,7 +162,7 @@ export default function SwapForm({
       onSubmit={handleSubmit}
       className="mt-32 max-w-lg flex flex-col z-10 bg-background p-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000002f]">
       <h3 className="text-2xl font-semibold">
-        {isMinting ? 'Mint' : 'Burn'} $NUMA
+        {isMinting ? 'Mint $NUMA' : 'Redeem $rETH'}
       </h3>
       <p className="mt-1 text-[#545b76] mb-5">
         {isMinting
