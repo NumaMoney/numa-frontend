@@ -72,8 +72,7 @@ export default function ConnectorSheet() {
               )}
               key={connector.uid}
               onClick={() => {
-                toast(JSON.stringify(connector));
-                // connect({ connector });
+                connect({ connector });
               }}>
               <Image
                 src={connector.icon || '/logo.svg'}
