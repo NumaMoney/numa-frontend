@@ -15,7 +15,7 @@ import {
 } from 'wagmi';
 import { Button } from './ui/button';
 import { ArrowDownUp } from 'lucide-react';
-import { sepolia,arbitrum } from 'viem/chains';
+import { sepolia, arbitrum } from 'viem/chains';
 import { toast } from 'sonner';
 import { ETH_ADDRESS, NUMA_ADDRESS, VAULT_ADDRESS } from '@/contract/contract';
 
@@ -71,9 +71,8 @@ export default function SwapForm({
     } else {
       setEth((Number(formatEther(rEthEst.result)) * Number(numa)).toString());
     }
-
   }, [rEthEst?.result]);
-  
+
   function handleNumaChange(e: ChangeEvent<HTMLInputElement>) {
     setNuma(e.target.value);
 
@@ -89,13 +88,12 @@ export default function SwapForm({
   function handleEthChange(e: ChangeEvent<HTMLInputElement>) {
     setEth(e.target.value);
 
-    if (Number(e.target.value)> rEthMaxLimit)
-    {
-      let text = `To proceed, please split into more than one transaction. The protocol limits single transactions to 10% of the vault value to prevent manipulation. At present, each transaction should be less than ${Math.round(Number(rEthMaxLimit) * 1000) / 1000} rETH. You are free to submit as many transactions as you wish`;
+    if (Number(e.target.value) > rEthMaxLimit) {
+      let text = `To proceed, please split into more than one transaction. The protocol limits single transactions to 10% of the vault value to prevent manipulation. At present, each transaction should be less than ${
+        Math.round(Number(rEthMaxLimit) * 1000) / 1000
+      } rETH. You are free to submit as many transactions as you wish`;
       toast.error(text, { duration: 10000 });
     }
-
-
 
     if (typeof numaEst?.result === 'bigint') {
       setNuma(
@@ -156,11 +154,10 @@ export default function SwapForm({
     onArbitrum = false;
   }
 
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-32 max-w-lg flex flex-col z-10 bg-background p-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000002f]">
+      className="mt-32 max-w-lg flex flex-col z-10 bg-background px-5 py-10 rounded-2xl shadow-[0px_0px_10px_4px_#0000002f]">
       <h3 className="text-2xl font-semibold">
         {isMinting ? 'Mint $NUMA' : 'Redeem $rETH'}
       </h3>
@@ -275,7 +272,7 @@ export default function SwapForm({
         setShowConnectors={setShowConnectors}
         switchNetwork={switchNetwork}
         isMinting={isMinting}
-        rEthMaxLimit = {rEthMaxLimit}
+        rEthMaxLimit={rEthMaxLimit}
         token={token}
         numa={numa}
         rEth={rEth}
@@ -332,7 +329,6 @@ function Buttons({
     );
   }
 
-
   if (tx?.isLoading) {
     return (
       <Button
@@ -345,12 +341,10 @@ function Buttons({
   }
 
   // ttc
-  if (
-    (isMinting && Number(rEthMaxLimit) < Number(rEth)) )
-   {
+  if (isMinting && Number(rEthMaxLimit) < Number(rEth)) {
     return (
       <Button
-      disabled={true}
+        disabled={true}
         type="submit"
         className="rounded-lg py-6 text-lg font-semibold mt-4">
         Max transaction = {Math.round(Number(rEthMaxLimit) * 1000) / 1000} rETH
@@ -364,15 +358,13 @@ function Buttons({
   ) {
     return (
       <Button
-      disabled={true}
+        disabled={true}
         type="submit"
         className="rounded-lg py-6 text-lg font-semibold mt-4">
         Not enough balance
       </Button>
     );
   }
-
-
 
   if (
     (isMinting && Number(token?.ethAllowance) < Number(rEth)) ||

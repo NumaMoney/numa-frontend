@@ -12,9 +12,12 @@ import { useConnect } from 'wagmi';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { toast } from 'sonner';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 export default function ConnectorSheet() {
   const [showConnectors, setShowConnectors] = useAtom(connectorAtom);
+  const isMobile = useMediaQuery('(max-width: 740px)');
 
   const { connectors, connect } = useConnect();
 
@@ -41,6 +44,14 @@ export default function ConnectorSheet() {
     return c;
   });
 
+  filteredConnectors = isMobile
+    ? filteredConnectors.filter(
+        (c: any) => !(c.id === 'coinbaseWalletSDK' || c.id == 'metaMaskSDK')
+      )
+    : filteredConnectors;
+
+  console.log('filteredConnectors', filteredConnectors);
+
   return (
     <Sheet open={showConnectors} onOpenChange={handleCloseConnectors}>
       <SheetContent>
@@ -55,21 +66,23 @@ export default function ConnectorSheet() {
           {filteredConnectors.map((connector, idx) => (
             <span
               className={cn(
-                'bg-gray-500/5 p-6 cursor-pointer flex gap-4 items-center text-xl',
+                'bg-gray-500/5 px-3 py-5 md:px-6 cursor-pointer flex gap-4 items-center',
                 idx === 0 && 'rounded-t-lg',
                 idx === filteredConnectors.length - 1 && 'rounded-b-lg'
               )}
               key={connector.uid}
               onClick={() => {
-                connect({ connector });
+                toast(JSON.stringify(connector));
+                // connect({ connector });
               }}>
               <Image
                 src={connector.icon || '/logo.svg'}
                 width={40}
                 height={40}
                 alt={connector.name}
+                className="w-6 h-6 md:w-10 md:h-10"
               />
-              <p>{connector.name}</p>
+              <p className="text-lg md:text-xl">{connector.name}</p>
             </span>
           ))}
         </div>

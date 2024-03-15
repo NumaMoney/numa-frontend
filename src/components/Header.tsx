@@ -28,7 +28,7 @@ export default function Header() {
   }, [isConnected]);
 
   return (
-    <div className="absolute w-full px-8 py-4 flex bg-transparent items-center justify-between z-50">
+    <div className="absolute w-full px-5 py-4 flex bg-transparent items-center justify-between z-50">
       <Image src="/logo.svg" width={100} height={100} alt="logo" />
       <div className="flex items-center gap-2">
         {isConnected && address ? (
